@@ -1,0 +1,5 @@
+v0.1.0 - 29.01.2023 - Initial release
+- Creation of the project
+- Creation of the datatable layout
+- Creation of the datatable component
+- Creation of the dmyoui-atatable-actions component

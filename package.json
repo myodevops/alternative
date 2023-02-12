@@ -1,0 +1,38 @@
+{
+    "name": "mydevops/alternative",
+    "description": "Evolutions of layouts and components of Laravel AdminLTE",
+	"license": "MIT",
+	"type": "module",
+    "version": "0.1.0",
+	"authors": [
+        {
+            "name": "nicola-myo",
+            "email": "n.cainelli@myobject.org"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "myodevops\\ALTErnative\\": "src/"
+        }
+    }
+	,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "myodevops\\ALTErnative\\ALTErnativeServiceProvider"
+            ]
+        }
+    },	
+    "require": {
+        "laravel/framework": ">=6.0",
+        "php": ">=7.2.0",
+        "jeroennoten/laravel-adminlte": "^5.0",
+        "moment/moment": "^2.29.1",
+        "datatables/datatables": "^1.10",
+        "tempusdominus/bootstrap-4": "^5.1",
+        "select2/select2": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/php-timer": "^5.0"
+    }
+}
