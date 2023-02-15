@@ -29,7 +29,7 @@
     "require": {
         "laravel/framework": ">=6.0",
         "php": ">=7.2.0",
-        "jeroennoten/laravel-adminlte": "^v3.8.6",
+        "jeroennoten/laravel-adminlte": ">=v3.8.5",
         "moment/moment": "^2.29.1",
         "datatables/datatables": "^1.10",
         "tempusdominus/bootstrap-4": "^5.1",
