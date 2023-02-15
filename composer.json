@@ -3,7 +3,7 @@
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
 	"type": "module",
-    "version": "00.02.01",
+    "version": "00.02.03",
 	"authors": [
         {
             "name": "nicola-myo",
@@ -14,8 +14,13 @@
         "psr-4": {
             "myodevops\\ALTErnative\\": "src/"
         }
-    }
-	,
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "ALTErnative\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
