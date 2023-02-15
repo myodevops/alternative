@@ -2,8 +2,7 @@
     "name": "myodevops/alternative",
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
-	"type": "module",
-    "version": "00.02.03",
+    "version": "00.02.04",
 	"authors": [
         {
             "name": "nicola-myo",
@@ -16,10 +15,9 @@
         }
     },
     "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/",
-            "ALTErnative\\Tests\\": "tests/"
-        }
+        "classmap": [
+            "tests/TestCase.php"
+        ]
     },
     "extra": {
         "laravel": {
@@ -31,7 +29,7 @@
     "require": {
         "laravel/framework": ">=6.0",
         "php": ">=7.2.0",
-        "jeroennoten/laravel-adminlte": "^5.0",
+        "jeroennoten/laravel-adminlte": "^v3.8.6",
         "moment/moment": "^2.29.1",
         "datatables/datatables": "^1.10",
         "tempusdominus/bootstrap-4": "^5.1",
