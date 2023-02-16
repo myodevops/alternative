@@ -2,7 +2,7 @@
     "name": "myodevops/alternative",
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
-    "version": "00.02.06",
+    "version": "00.02.07",
 	"authors": [
         {
             "name": "nicola-myo",
@@ -27,11 +27,11 @@
         },
         "public-files": [
             {
-                "from": "public/js/alternative.js",
+                "from": "js/alternative.js",
                 "to": "public/js/alternative.js"
             },
             {
-                "from": "public/css/alternative.css",
+                "from": "css/alternative.css",
                 "to": "public/css/alternative.css"
             }
         ]

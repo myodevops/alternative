@@ -45,7 +45,7 @@ class ALTErnativeServiceProvider extends ServiceProvider
     {
         $this->loadViews();
         $this->loadComponents();
-        $this->copyPubblics();
+        $this->copyPublics();
     }
 
     /**
@@ -82,7 +82,8 @@ class ALTErnativeServiceProvider extends ServiceProvider
 
         $canLoadComponents = method_exists(
             'Illuminate\Support\ServiceProvider',
-            'loadViewComponentsAs'
+            'loadViewComponentsAs',
+            'publishes'
         );
 
         if (! $canLoadComponents) {
@@ -98,7 +99,7 @@ class ALTErnativeServiceProvider extends ServiceProvider
         $this->loadViewComponentsAs($this->pkgPrefix, $components);
     }
 
-    private function copyPubblics()
+    private function copyPublics()
     {
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/myodevops/alternative'),
