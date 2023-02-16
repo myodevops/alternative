@@ -82,8 +82,7 @@ class ALTErnativeServiceProvider extends ServiceProvider
 
         $canLoadComponents = method_exists(
             'Illuminate\Support\ServiceProvider',
-            'loadViewComponentsAs',
-            'publishes'
+            'loadViewComponentsAs'
         );
 
         if (! $canLoadComponents) {
