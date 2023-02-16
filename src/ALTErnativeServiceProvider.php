@@ -45,6 +45,7 @@ class ALTErnativeServiceProvider extends ServiceProvider
     {
         $this->loadViews();
         $this->loadComponents();
+        $this->copyPubblics();
     }
 
     /**
@@ -95,5 +96,12 @@ class ALTErnativeServiceProvider extends ServiceProvider
         );
 
         $this->loadViewComponentsAs($this->pkgPrefix, $components);
+    }
+
+    private function copyPubblics()
+    {
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/myodevops/alternative'),
+        ], 'public');
     }
 }

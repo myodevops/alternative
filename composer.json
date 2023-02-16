@@ -2,7 +2,7 @@
     "name": "myodevops/alternative",
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
-    "version": "00.02.05",
+    "version": "00.02.06",
 	"authors": [
         {
             "name": "nicola-myo",
@@ -24,7 +24,17 @@
             "providers": [
                 "myodevops\\ALTErnative\\ALTErnativeServiceProvider"
             ]
-        }
+        },
+        "public-files": [
+            {
+                "from": "public/js/alternative.js",
+                "to": "public/js/alternative.js"
+            },
+            {
+                "from": "public/css/alternative.css",
+                "to": "public/css/alternative.css"
+            }
+        ]
     },	
     "require": {
         "laravel/framework": ">=6.0",
