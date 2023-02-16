@@ -2,7 +2,7 @@
     "name": "myodevops/alternative",
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
-    "version": "00.02.11",
+    "version": "00.02.12",
 	"authors": [
         {
             "name": "nicola-myo",
@@ -34,14 +34,6 @@
                 "from": "css/alternative.css",
                 "to": "public/css/alternative.css"
             }
-        ]
-    },	
-    "scripts": {
-        "post-install-cmd": [
-            "php ../../../artisan vendor:publish --tag=public --force"
-        ],
-        "post-update-cmd": [
-            "php ../../../artisan vendor:publish --tag=public --force"
         ]
     },
     "require": {

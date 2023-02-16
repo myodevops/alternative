@@ -102,6 +102,6 @@ class ALTErnativeServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/myodevops/alternative'),
-        ], 'public');
+        ], 'laravel-assets');
     }
 }
