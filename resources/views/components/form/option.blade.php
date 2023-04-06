@@ -1,22 +1,29 @@
 @if($multiple)
-    <x-adminlte-select2 name="{{ $name }}" label="{{ $label }}" label-class="{{ $labelclass }}" placeholder="{{ $placeholder }}" :disabled="$disabled" multiple class="select2">
+    <x-adminlte-select2 name="{{ $name }}" 
+                        label="{{ $label }}" 
+                        placeholder="{{ $placeholder }}" 
+                        :disabled="$disabled" 
+                        label-class="{{ $labelclass }}" 
+                        data-fieldname="{{ $fieldname }}"  
+                        multiple 
+                        class="select2">
     @if($prependSlotClass!=="")
         <x-slot name="prependSlot">
-            <div class="{{ $labelclass }}">
+            <div class="input-group-text">
                 <i class="{{ $prependSlotClass }}"></i>
+            </div>
+        </x-slot>
+    @else
+        <x-slot name="prependSlot">
+            <div class="input-group-text">
+                <i class="fa-solid fa-square-xmark"></i>
             </div>
         </x-slot>
     @endif
     @if($appendSlotClass!=="")
         <x-slot name="appendSlot">
-            <div class="input-group-text">
+            <div class="{{ $labelclass }}">
                 <i class="{{ $appendSlotClass }}"></i>
-            </div>
-        </x-slot>
-    @else
-        <x-slot name="appendSlot">
-            <div class="input-group-text">
-                <i class="fa-solid fa-circle-xmark"></i>
             </div>
         </x-slot>
     @endif
@@ -25,7 +32,12 @@
     @endforeach
     </x-adminlte-select2>
 @else
-    <x-adminlte-select name="{{ $name }}" label="{{ $label }}" label-class="{{ $labelclass }}" placeholder="{{ $placeholder }}" :disabled="$disabled">
+    <x-adminlte-select name="{{ $name }}" 
+                       label="{{ $label }}" 
+                       placeholder="{{ $placeholder }}" 
+                       :disabled="$disabled"
+                       data-fieldname="{{ $fieldname }}" 
+                       label-class="{{ $labelclass }}" >
     @if($prependSlotClass!=="")
         <x-slot name="prependSlot">
             <div class="{{ $labelclass }}">

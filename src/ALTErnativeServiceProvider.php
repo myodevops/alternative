@@ -20,9 +20,12 @@ class ALTErnativeServiceProvider extends ServiceProvider
         'input-time' => Form\InputTime::class,
         'input-url' => Form\InputUrl::class,
         'input' => Form\Input::class,
+        'input-key' => Form\InputKey::class,
+        'input-checkbox' => Form\InputCheckbox::class,
         'modal-confirm' => Form\ModalConfirm::class,
-        'modal-form' => Form\ModalForm::class,
         'modal-message' => Form\ModalMessage::class,
+        'modal-form' => Form\ModalForm::class,
+        'modeless-form' => Form\ModelessForm::class,
         'option' => Form\Option::class,
     ];
 

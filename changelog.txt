@@ -4,3 +4,4 @@ v00.01.* - 29.01.2023 - Initial release
 - Creation of the datatable component
 - Creation of the dmyoui-atatable-actions component
 v00.02.* - 16.02.2023 - Package configuration
+v00.03.* - 06.04.2023 - Binding implementation

@@ -18,9 +18,21 @@ class InputDateTime extends Input
      *
      * @return void
      */
-    public function __construct($name, $label, $placeholder, $disabled=null, $prependSlotClass="", $appendSlotClass="")
+    public function __construct($name, 
+                                $label, 
+                                $placeholder, 
+                                $fieldname="",
+                                $disabled=null, 
+                                $prependSlotClass="", 
+                                $appendSlotClass="")
     {
-        parent::__construct($name, $label, $placeholder, $disabled, $prependSlotClass, $appendSlotClass);
+        parent::__construct($name, 
+                            $label, 
+                            $placeholder, 
+                            $fieldname,
+                            $disabled, 
+                            $prependSlotClass, 
+                            $appendSlotClass);
     }
 
     /**

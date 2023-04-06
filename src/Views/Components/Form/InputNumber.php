@@ -12,9 +12,23 @@ class InputNumber extends Input
      *
      * @return void
      */
-    public function __construct($name, $label, $placeholder, $disabled=null, $prependSlotClass="", $appendSlotClass="", $min=0, $max=PHP_FLOAT_MAX)
+    public function __construct($name, 
+                                $label, 
+                                $placeholder, 
+                                $fieldname="",
+                                $disabled=null, 
+                                $prependSlotClass="", 
+                                $appendSlotClass="", 
+                                $min=0, 
+                                $max=PHP_FLOAT_MAX)
     {
-        parent::__construct($name, $label, $placeholder, $disabled, $prependSlotClass, $appendSlotClass);
+        parent::__construct($name, 
+                            $label, 
+                            $placeholder, 
+                            $fieldname,
+                            $disabled, 
+                            $prependSlotClass, 
+                            $appendSlotClass);
         $this->min = $min;
         $this->max = $max;
     }

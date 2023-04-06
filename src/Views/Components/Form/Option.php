@@ -13,12 +13,27 @@ class Option extends Input
      *
      * @return void
      */
-    public function __construct($name, $label, $labelclass="text-black", $placeholder, $disabled=null, $options, $multiple=null, $prependSlotClass="", $appendSlotClass="")
+    public function __construct($name, 
+                                $label, 
+                                $placeholder, 
+                                $fieldname="", 
+                                $disabled=null, 
+                                $prependSlotClass="", 
+                                $appendSlotClass="", 
+                                $options, 
+                                $labelclass="text-black", 
+                                $multiple=null)
     {
         $this->options = $options;
         $this->labelclass = $labelclass;
         isset($multiple) ? $this->multiple = true : $this->multiple = false;
-        parent::__construct($name, $label, $placeholder, $disabled, $prependSlotClass, $appendSlotClass);
+        parent::__construct($name, 
+                            $label, 
+                            $placeholder, 
+                            $fieldname, 
+                            $disabled, 
+                            $prependSlotClass, 
+                            $appendSlotClass);
     }
 
     /**

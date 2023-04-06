@@ -1,4 +1,4 @@
-<x-adminlte-input name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" :disabled="$disabled" >
+<x-adminlte-input name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" data-fieldname="{{ $fieldname }}" :disabled="$disabled" >
 @if($prependSlotClass!=="")
     <x-slot name="prependSlot">
         <div class="input-group-text">

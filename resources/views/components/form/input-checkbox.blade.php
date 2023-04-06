@@ -1,0 +1,9 @@
+<x-adminlte-input-switch name="{{ $name }}" 
+                         label="{{ $label }}" 
+                         placeholder="{{ $placeholder }}" 
+                         data-fieldname="{{ $fieldname }}"
+                         data-on-color="{{ $dataoncolor }}" 
+                         data-off-color="{{ $dataoffcolor }}" 
+                         data-on-text="{{ $dataontext }}" 
+                         data-off-text="{{ $dataofftext }}" 
+                         :disabled="$disabled" />

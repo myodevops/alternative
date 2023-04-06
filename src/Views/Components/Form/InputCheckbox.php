@@ -2,15 +2,13 @@
 
 namespace myodevops\ALTErnative\Views\Components\Form;
 
-class InputDate extends Input
+class InputCheckbox extends Input
 {
-    public $config = [
-        "showOn" => "button",
-        "singleDatePicker" => true,
-        "startDate" => "js:moment()",
-        "cancelButtonClasses" => "btn-danger",
-        "locale" => ["format" => "DD-MM-YYYY"],
-    ];
+    public $dataoncolor = "success";
+    public $dataoffcolor = "danger";
+    public $dataontext = "";
+    public $dataofftext = "";
+
     /**
      * Create a new component instance.
      *
@@ -21,16 +19,22 @@ class InputDate extends Input
                                 $placeholder, 
                                 $fieldname="",
                                 $disabled=null, 
-                                $prependSlotClass="", 
-                                $appendSlotClass="")
+                                $dataoncolor="success", 
+                                $dataoffcolor="danger",
+                                $dataontext="", 
+                                $dataofftext="")
     {
         parent::__construct($name, 
                             $label, 
                             $placeholder, 
                             $fieldname,
-                            $disabled, 
-                            $prependSlotClass, 
-                            $appendSlotClass);
+                            $disabled);
+
+        $this->dataoncolor = $dataoncolor;
+        $this->dataoffcolor = $dataoffcolor;
+        $this->dataontext = $dataontext;
+        $this->dataofftext = $dataofftext;
+                        
     }
 
     /**
@@ -40,6 +44,6 @@ class InputDate extends Input
      */
     public function render()
     {
-        return view('alternative::components.form.input-date');
+        return view('alternative::components.form.input-checkbox');
     }
 }

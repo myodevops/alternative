@@ -1,4 +1,4 @@
-<x-adminlte-date-range name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" :config=$config :disabled="$disabled">
+<x-adminlte-date-range name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" data-fieldname="{{ $fieldname }}" :config=$config :disabled="$disabled">
 @if($prependSlotClass!=="")
     <x-slot name="prependSlot">
         <div class="input-group-text">

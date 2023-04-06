@@ -4,7 +4,10 @@
   color: white !important;
   background-color: darkslategray;
 }
-
+@font-face {
+  font-family: "comfortaa";
+  src: url(/fonts/Comfortaa.woff) format("woff");
+}
 @font-face {
     font-display: block;
     font-family: "bootstrap-icons";

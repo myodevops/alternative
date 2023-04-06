@@ -15,7 +15,9 @@ class DatatableActions extends Component
      *
      * @return void
      */
-    public function __construct($id, $action = '#', $method = 'get')
+    public function __construct($id, 
+                                $action = '#', 
+                                $method = 'get')
     {
         $this->id = $id;
         $this->action = $action;

@@ -8,7 +8,7 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 /**
  * Undocumented class
  */
-class ModalForm extends Component
+class ModelessForm extends Component
 {
     public $id = '';
     public $title = '';
@@ -16,6 +16,13 @@ class ModalForm extends Component
     public $actionwrite = '';
     public $method = '';
     public $theme = '';
+    public $bodyclass = ''; 
+    public $headerclass = ''; 
+    public $footerclass = ''; 
+    public $icon = ''; 
+    public $collapsible = null;  
+    public $removable = null;  
+    public $maximizable = null; 
 
     /**
      * Constructor of the class
@@ -32,7 +39,14 @@ class ModalForm extends Component
                                 $actionread = '#', 
                                 $actionwrite = '#', 
                                 $method = 'get', 
-                                $theme='light')
+                                $theme='light',
+                                $bodyclass = '',
+                                $headerclass = 'bg-success',
+                                $footerclass = 'bg-light', 
+                                $icon = '',
+                                $collapsible = null,
+                                $removable = null,
+                                $maximizable = null)
     {
         $this->id = $id;
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
@@ -40,6 +54,13 @@ class ModalForm extends Component
         $this->actionwrite = $actionwrite;
         $this->method = $method;
         $this->theme = $theme;
+        $this->bodyclass = $bodyclass;
+        $this->headerclass = $headerclass;
+        $this->footerclass = $footerclass;
+        $this->icon = $icon;
+        $this->collapsible = $collapsible;
+        $this->removable = $removable;
+        $this->maximizable = $maximizable;
     }
 
     /**
@@ -49,6 +70,6 @@ class ModalForm extends Component
      */
     public function render()
     {
-        return view('alternative::components.form.modal-form');
+        return view('alternative::components.form.modeless-form');
     }
 }

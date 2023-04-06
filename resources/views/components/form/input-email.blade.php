@@ -1,4 +1,4 @@
-<x-adminlte-input name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" :disabled="$disabled" onchange="myo.UI.validateEmailField(this, event)" email >
+<x-adminlte-input name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" data-fieldname="{{ $fieldname }}" :disabled="$disabled" onchange="myo.UI.validateEmailField(this, event)" email >
 @if($prependSlotClass!=="")
     <x-slot name="prependSlot">
         <div class="input-group-text">

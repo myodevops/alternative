@@ -1,5 +1,9 @@
-<x-adminlte-modal id="{{ $id }}" title="myobject" theme="{{ $theme }}"
-    icon="fas fa-circle-question" size='sm' disable-animations>
+<x-adminlte-modal id="{{ $id }}" 
+                  title="myobject" 
+                  theme="{{ $theme }}"
+                  icon="fas fa-circle-question" 
+                  size='sm' 
+                  disable-animations>
     {{ $slot }}
     <x-slot name="footerSlot">
         <x-adminlte-button id="{{ $id . '-button' }}" theme="success" label="{{ $oklabel }}" data-action="{{ $action }}" data-method="{{ $method }}" data-dismiss="modal"/>
@@ -14,12 +18,14 @@ $(document).ready(function () {
         $('#{{ $id }}').on('click','#{{ $id }}-button',function(e){
             switch (this.dataset.method.toLowerCase()) {
                 case 'delete':
-                    var response = myo.WS.callDeleteRequest (this.dataset.actionset, "{{ csrf_token() }}");
-                    if (response === true) {
-                        jQuery('#{{ $id }}').modal('hide');
-                        dttable.row('.selected').remove().draw(false);
-                    } else {
-                        alert (response);
+                    if (typeof(this.dataset.actionset) != "undefined") {
+                        var response = myo.WS.callDeleteRequest (this.dataset.actionset, "{{ csrf_token() }}");
+                        if (response === true) {
+                            jQuery('#{{ $id }}').modal('hide');
+                            dttable.row('.selected').remove().draw(false);
+                        } else {
+                            alert (response);
+                        }
                     }
                 break;
             }

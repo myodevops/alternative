@@ -29,7 +29,12 @@ class ModalConfirm extends Component
      * @param string $oklabel Label of the confirm button (default is Ok)
      * @param string $cancellabel Label of the abort button (default is Cancel)
      */
-    public function __construct($id, $action = '#', $method = 'get', $theme='light', $oklabel='', $cancellabel = '')
+    public function __construct($id, 
+                                $action = '#', 
+                                $method = 'get', 
+                                $theme='light', 
+                                $oklabel='', 
+                                $cancellabel = '')
     {
         $this->id = $id;
         $this->action = $action;

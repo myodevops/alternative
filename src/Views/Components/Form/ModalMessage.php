@@ -14,7 +14,8 @@ class ModalMessage extends Component
      *
      * @return void
      */
-    public function __construct($id, $theme='light')
+    public function __construct($id, 
+                                $theme='light')
     {
         $this->id = $id;
         $this->theme = $theme;

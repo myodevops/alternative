@@ -1,4 +1,4 @@
-<x-adminlte-input name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" :disabled="$disabled" type="number" min="{{ $min }}" max="{{ $max }}" >
+<x-adminlte-input name="{{ $name }}" label="{{ $label }}" placeholder="{{ $placeholder }}" data-fieldname="{{ $fieldname }}" :disabled="$disabled" type="number" min="{{ $min }}" max="{{ $max }}" >
 @if($prependSlotClass!=="")
     <x-slot name="prependSlot">
         <div class="input-group-text">

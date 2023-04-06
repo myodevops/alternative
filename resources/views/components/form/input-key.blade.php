@@ -1,0 +1,1 @@
+<x-adminlte-input name="7ac9b765-2c72-44a5-b40d-85e0bed7a624" data-fieldname="{{ $fieldname }}" type="hidden" />

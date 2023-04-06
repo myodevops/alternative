@@ -4,21 +4,18 @@ namespace myodevops\ALTErnative\Views\Components\Form;
 
 use Illuminate\View\Component;
 
-class Datatable extends Component
+class InputKey extends Component
 {
-    public $name = '';
-    public $heads = '';
+    public $fieldname = "";         // Name of the field of the key
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, 
-                                $heads)
+    public function __construct($fieldname)
     {
-        $this->name = $name;
-        $this->heads = $heads;
+        $this->fieldname = $fieldname;
     }
 
     /**
@@ -28,6 +25,6 @@ class Datatable extends Component
      */
     public function render()
     {
-        return view('alternative::components.form.datatable');
+        return view('alternative::components.form.input-key');
     }
 }
