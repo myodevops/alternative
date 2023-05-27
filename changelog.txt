@@ -1,7 +1,9 @@
-v00.01.* - 29.01.2023 - Initial release
-- Creation of the project
-- Creation of the datatable layout
-- Creation of the datatable component
-- Creation of the dmyoui-atatable-actions component
-v00.02.* - 16.02.2023 - Package configuration
-v00.03.* - 06.04.2023 - Binding implementation
+v00.01.1 - 29.01.2023 - Initial release
+v00.01.2 - 29.01.2023 - Creation of the project
+v00.01.3 - 29.01.2023 - Creation of the datatable layout
+v00.01.4 - 29.01.2023 - Creation of the datatable component
+v00.01.5 - 29.01.2023 - Creation of the dmyoui-atatable-actions component
+v00.02.1 - 16.02.2023 - Package configuration
+v00.03.1 - 06.04.2023 - Binding implementation
+v00.04.1 - 12.05.2023 - Checking of the name of some components in the datatables
+v00.05.1 - 28.05.2023 - Sweetalert implementation

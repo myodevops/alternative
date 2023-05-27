@@ -11,8 +11,7 @@
                            theme="success" 
                            label="{{ __('Submit') }}" 
                            data-actionwrite="{{ $actionwrite }}" 
-                           data-method="{{ $method }}" 
-                           data-dismiss="modal"/>
+                           data-method="{{ $method }}" />
         <x-adminlte-button theme="danger" 
                            label="{{ __('Cancel') }}" 
                            data-dismiss="modal"/>
@@ -28,11 +27,9 @@ $(document).ready(function () {
                 case 'modify':
                     if (typeof(this.dataset.actionwrite) != "undefined") {
                         var response = myo.WS.callUpdateRequest ("{{ $id }}", this.dataset.actionwrite, "{{ csrf_token() }}");
-                        if (response === true) {
+                        if (response == true) {
                             jQuery('#{{ $id }}').modal('hide');
                             dttable.ajax.reload();
-                        } else {
-                            alert (response);
                         }
                     }
                 break;

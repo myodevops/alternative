@@ -1,9 +1,22 @@
 myo = {
     UI: {
+        alertType : {
+            OperativeSuccess: 0,
+            OperativeInfo: 1,
+            OperativeWarning: 2,
+            OperativeError: 3,
+            RuntimeError: 4            
+        },
         newRecordUUID: 'af24f1d4-2916-4c55-a526-9f6217466ec3',
         dttable: null,
+        OnDeleteActionFormAlert: false,
+        OnModifyActionFormAlert: false,
 
         initializeDataTable (tableRef) {
+            table = document.getElementById(tableRef);
+            if (typeof(table) == 'undefined' || table == null) {
+                alert ('Undefined datatableform "' + tableRef + '" defined as datatable');
+            }
             $('#'+tableRef).on('init.dt', function (e) {
                 dttable = $('#'+tableRef).DataTable();
 
@@ -31,7 +44,6 @@ myo = {
                 }
             });
 
-            table = document.getElementById(tableRef);
             tbody = table.getElementsByTagName('tbody')[0];
             $(tbody).on('click', 'tr', function () {
                 if (jQuery(this).hasClass('selected')) {
@@ -48,10 +60,17 @@ myo = {
             var dataTableOnModifyActionForm = this.api().context[0].oInit.onModifyActionForm;
             
             if (typeof dataTableOnModifyActionForm !== 'undefined') {
-                var modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
-
-                modifyButton.setAttribute ('onclick', 
-                   'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", [' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '])');
+                var onModifyActionForm = document.getElementById (dataTableOnModifyActionForm);
+                if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
+                    var modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
+                    modifyButton.setAttribute ('onclick', 
+                        'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", [' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '])');
+                } else {
+                    if (!this.OnModifyActionFormAlert) {
+                        alert ('Undefined form "' + dataTableOnModifyActionForm + '" defined in OnModifyActionForm property of the datatable');
+                        this.OnModifyActionFormAlert = true;
+                    }
+                }
             }
             
             // Assignment of the action to the cancel button
@@ -59,10 +78,17 @@ myo = {
             var dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
 
             if (typeof dataTableOnDeleteActionForm !== 'undefined') {
-                var deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
-                pippo = 'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", [' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '])';
-                deleteButton.setAttribute ('onclick', 
-                  'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", [' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '])');
+                var onDeleteActionForm = document.getElementById (dataTableOnDeleteActionForm);
+                if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
+                    var deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
+                    deleteButton.setAttribute ('onclick', 
+                        'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", [' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '])');
+                } else {
+                    if (!this.OnDeleteActionFormAlert) {
+                        alert ('Undefined form "' + dataTableOnDeleteActionForm + '" defined in OnDeleteActionForm property of the datatable');
+                        this.OnDeleteActionFormAlert = true;
+                    }
+                }
             }
         },
         onClickModifyDataTable(modalname, arraykey){
@@ -103,7 +129,7 @@ myo = {
         validateEmailField(emailField, event) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!re.test(String(emailField.value).toLowerCase())) {
-                alert ("Invalid email!");
+                myo.UI.raiseAlert (myo.UI.alertType.OperativeError, "Invalid email!");
                 event.preventDefault();
                 emailField.focus();
                 return false;
@@ -261,6 +287,71 @@ myo = {
         changeField(field) {
             var event = new Event('change');
             field.dispatchEvent(event);
+        },
+        processAlert(obj) {
+            /**
+             * View the corresponding message in a response, if exists, based on his tipology
+             * Params:
+             *   response: array of the response
+             * Return:
+             *   false if the message is blocker, true if not
+             */
+            switch (true) {
+                case obj.hasOwnProperty('_operativeSuccess'):
+                    myo.UI.raiseAlert (myo.UI.alertType.OperativeSuccess, obj['_operativeSuccess']['message']);
+                    return true;
+                case obj.hasOwnProperty('_operativeInfo'):
+                    myo.UI.raiseAlert (myo.UI.alertType.OperativeInfo, obj['_operativeInfo']['message']);
+                    return true;    
+                case obj.hasOwnProperty('_operativeWarning'):
+                    myo.UI.raiseAlert (myo.UI.alertType.OperativeWarning, obj['_operativeWarning']['message']);
+                    return true;
+                case obj.hasOwnProperty('_operativeError'):
+                    myo.UI.raiseAlert (myo.UI.alertType.OperativeError, obj['_operativeError']['message']);
+                    return false;
+                case obj.hasOwnProperty('_runtimeError'):
+                    myo.UI.raiseAlert (myo.UI.alertType.RuntimeError, obj['_runtimeError']['message']);
+                    return false;
+            }
+            return true;
+        },
+        raiseAlert(type, message) {
+            switch (type) {
+                case myo.UI.alertType.OperativeSuccess:
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        text: message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    break;
+                case myo.UI.alertType.OperativeInfo:
+                    Swal.fire({ 
+                        text: message,
+                        icon: 'info'
+                    });
+                    break;
+                case myo.UI.alertType.OperativeWarning:
+                    Swal.fire({ 
+                        text: message,
+                        icon: 'warning'
+                    });
+                    break;
+                case myo.UI.alertType.OperativeError:
+                    Swal.fire({ 
+                        text: message,
+                        icon: 'error'
+                    });                    
+                    break;
+                case myo.UI.alertType.RuntimeError:
+                    Swal.fire({ 
+                        text: message,
+                        icon: 'error',
+                        iconHtml: '!'
+                    });                    
+                    break;
+            }
         }
     },
     WS: {
@@ -274,12 +365,18 @@ myo = {
                     "_token": token
                 },
                 success: function (result) {
-                    response.success = true;
+                    conclusion = myo.UI.processAlert (result);
+                    response.success = conclusion;
                     response.data = result;
                 },
                 error: function (result) {
-                    response.success = false;
-                    response.data = result.responseJSON.text;
+                    myo.UI.processAlert({
+                        "_runtimeError": {
+                            "message": result.responseText
+                        }
+                    });
+                    conclusion = false; 
+                    response.success = conclusion;
                 },
             });
 
@@ -296,10 +393,20 @@ myo = {
                 async: false,
                 data: data,
                 success: function (result) {
-                    conclusion = true;
+                    conclusion = myo.UI.processAlert(result);
                 },
                 error: function (result) {
-                    conclusion = result.statusText;
+                    try {
+                        conclusion = myo.UI.processAlert(JSON.parse(result.responseText));
+                    } catch (e) {
+                        myo.UI.processAlert({
+                            "_runtimeError": {
+                                "message": result.responseText
+                            }
+                        });    
+                    }
+                    
+                    conclusion = false; 
                 },
             });
 
@@ -315,10 +422,15 @@ myo = {
                     "_token": token
                 },
                 success: function (result) {
-                    conclusion = true;
+                    conclusion = myo.UI.processAlert (result);
                 },
                 error: function (result) {
-                    conclusion = result.responseJSON.text;
+                    myo.UI.processAlert({
+                        "_runtimeError": {
+                            "message": result.responseText
+                        }
+                    });
+                    conclusion = false; 
                 },
             });
 

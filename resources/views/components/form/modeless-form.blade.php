@@ -46,10 +46,7 @@
             switch (this.dataset.method.toLowerCase()) {
                 case 'modify':
                     if (typeof(this.dataset.actionwrite) != "undefined") {
-                        var response = myo.WS.callUpdateRequest ("{{ $id }}", this.dataset.actionwrite, "{{ csrf_token() }}");
-                        if (response !== true) {
-                            alert (response);
-                        }
+                        myo.WS.callUpdateRequest ("{{ $id }}", this.dataset.actionwrite, "{{ csrf_token() }}");
                     }
                 break;
             }
