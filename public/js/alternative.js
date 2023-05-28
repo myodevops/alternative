@@ -192,10 +192,13 @@ myo = {
             inputfields = form.getElementsByTagName('select');
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
-                    data[field.dataset.fieldname] = '|';
                     Array.from(field.children).forEach(function(child) {
                         if (child.selected) {
-                            data[field.dataset.fieldname] = data[field.dataset.fieldname] + child.value + '|';
+                            if (data[field.dataset.fieldname] === undefined) {
+                                data[field.dataset.fieldname] = child.value;
+                            } else {
+                                data[field.dataset.fieldname] =  data[field.dataset.fieldname] + '|' + child.value;
+                            }
                         }
                     })
                 }        
@@ -276,8 +279,9 @@ myo = {
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
                     if (field.dataset.fieldname in data) {
+                        var selection = '|' + data[field.dataset.fieldname] + '|';
                         Array.from(field.childNodes).forEach(function(child) {
-                            child.selected = data[field.dataset.fieldname].includes('|' + child.value + '|');
+                            child.selected = selection.includes('|' + child.value + '|');
                         });
                         myo.UI.changeField(field);
                     }
