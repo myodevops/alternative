@@ -7,6 +7,8 @@ class Option extends Input
     public $options = [];
     public $multiple = false;       // If thrue, the control is disabled
     public $labelclass = "";
+    public $api = "";
+    public $minimumresultsforsearch = "Infinity";
 
     /**
      * Create a new component instance.
@@ -20,11 +22,21 @@ class Option extends Input
                                 $disabled=null, 
                                 $prependSlotClass="", 
                                 $appendSlotClass="", 
-                                $options, 
+                                $options=null, 
+                                $api="",
+                                $withsearch=null,
                                 $labelclass="text-black", 
                                 $multiple=null)
     {
-        $this->options = $options;
+        if ($options !== null) {
+            $this->options = $options;
+        }
+        if ($api !== "") {
+            $this->api = $api;
+            if ($withsearch) {
+                $this->minimumresultsforsearch = 5;
+            }
+        }
         $this->labelclass = $labelclass;
         isset($multiple) ? $this->multiple = true : $this->multiple = false;
         parent::__construct($name, 

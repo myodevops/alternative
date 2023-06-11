@@ -249,9 +249,15 @@ myo = {
             inputfields = form.getElementsByTagName('select');
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
-                    Array.from(field.children).forEach(function(child) {
-                        child.selected = false;
-                    });
+                    if (field.hasAttribute('data-ajax--url')) {
+                        Array.from(field.children).forEach(function(child) {
+                            field.remove(child);
+                        });
+                    } else {
+                        Array.from(field.children).forEach(function(child) {
+                            child.selected = false;
+                        });    
+                    }
                 }        
             });
         },
@@ -279,10 +285,24 @@ myo = {
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
                     if (field.dataset.fieldname in data) {
-                        var selection = '|' + data[field.dataset.fieldname] + '|';
-                        Array.from(field.childNodes).forEach(function(child) {
-                            child.selected = selection.includes('|' + child.value + '|');
-                        });
+                        if (field.hasAttribute('data-ajax--url')) {
+                            url = field.getAttribute('data-ajax--url');
+                            selected = data[field.dataset.fieldname].split('|');
+                            selected.forEach (function(singlesel) {
+                                response = myo.WS.callReadRequest  (url + "/" + singlesel, 
+                                                                    document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                                optionElement = document.createElement('option');
+                                optionElement.value = singlesel;
+                                optionElement.textContent = response.data.text;    
+                                optionElement.setAttribute('selected', null);
+                                field.appendChild(optionElement);
+                            });
+                        } else {
+                            var selection = '|' + data[field.dataset.fieldname] + '|';
+                            Array.from(field.childNodes).forEach(function(child) {
+                                child.selected = selection.includes('|' + child.value + '|');
+                            });    
+                        }
                         myo.UI.changeField(field);
                     }
                 }        
