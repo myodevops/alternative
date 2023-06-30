@@ -11,3 +11,4 @@ v00.05.02 - 28.05.2023 - Bug fix on options
 v00.06.00 - 12.06.2023 - Option (Select2) Ajax data source implementation
 v00.07.00 - 30.06.2023 - Implementation of the Error Log
 v00.07.02 - 30.06.2023 - Bug fixing of the creation of the sq3 file
+v00.07.03 - 30.06.2023 - Bug fixing of the creation of the errlogs table

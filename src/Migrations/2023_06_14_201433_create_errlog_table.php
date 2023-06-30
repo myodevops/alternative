@@ -13,9 +13,9 @@ class CreateErrlogTable extends Migration
      */
     public function up()
     {
-        Schema::connection('altesqlite')->create('errlog', function (Blueprint $table) {
+        Schema::connection('altesqlite')->create('errorlogs', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
+            $table->text('message');
             $table->bigInteger('userid');
             $table->enum('type', ['warning', 'error', 'fatal', 'debug']);
             $table->string('info', 250);
@@ -30,6 +30,6 @@ class CreateErrlogTable extends Migration
      */
     public function down()
     {
-        Schema::connection('altesqlite')->dropIfExists('errlog');
+        Schema::connection('altesqlite')->dropIfExists('errorlogs');
     }
 }
