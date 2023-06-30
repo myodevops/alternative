@@ -15,6 +15,7 @@ class ModalForm extends Component
     public $actionread = '';
     public $actionwrite = '';
     public $method = '';
+    public $readonly = '';
     public $theme = '';
 
     /**
@@ -24,14 +25,16 @@ class ModalForm extends Component
      * @param string $action The URL of the WS action
      * @param string $method The method of the WS call:
      *                       get | post | delete
+     * @param boolean $readonly True if the form is readonly
      * @param string $theme Select a theme for the modal:
      *                      light | danger | info | success | warning
      */
     public function __construct($id, 
                                 $title, 
                                 $actionread = '#', 
-                                $actionwrite = '#', 
+                                $actionwrite = '#',
                                 $method = 'get', 
+                                $readonly = false,
                                 $theme='light')
     {
         $this->id = $id;
@@ -39,6 +42,7 @@ class ModalForm extends Component
         $this->actionread = $actionread;
         $this->actionwrite = $actionwrite;
         $this->method = $method;
+        $this->readonly = $readonly;
         $this->theme = $theme;
     }
 

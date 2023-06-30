@@ -30,8 +30,8 @@ myo = {
                     }
                 } );
 
-                var insertAllowed = dttable.context[0].oInit.insertAllowed;
-                var dataTableOnModifyActionForm = dttable.context[0].oInit.onModifyActionForm;    
+                const insertAllowed = dttable.context[0].oInit.insertAllowed;
+                const dataTableOnModifyActionForm = dttable.context[0].oInit.onModifyActionForm;    
                 if ((typeof insertAllowed !== 'undefined') && (typeof dataTableOnModifyActionForm !== 'undefined')) {
                     if (insertAllowed) {
                         dttable.button().add(0, {
@@ -55,38 +55,44 @@ myo = {
             });
         },
         OnCreatedRow (e, settings) {
-            // Assignment of the action to the cancel button
-            var modifyButton = e.childNodes.item(3).childNodes.item(0).childNodes.item(0).children.namedItem('dtModifyButton');
-            var dataTableOnModifyActionForm = this.api().context[0].oInit.onModifyActionForm;
-            
-            if (typeof dataTableOnModifyActionForm !== 'undefined') {
-                var onModifyActionForm = document.getElementById (dataTableOnModifyActionForm);
-                if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
-                    var modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
-                    modifyButton.setAttribute ('onclick', 
-                        'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", [' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '])');
-                } else {
-                    if (!this.OnModifyActionFormAlert) {
-                        alert ('Undefined form "' + dataTableOnModifyActionForm + '" defined in OnModifyActionForm property of the datatable');
-                        this.OnModifyActionFormAlert = true;
+            // Assignment of the action to the modify button
+            let modifyButton = null;
+            e.childNodes.forEach (element => {
+                modifyButton = element.querySelector('#dtModifyButton');
+            });
+            if (modifyButton) {
+                const dataTableOnModifyActionForm = this.api().context[0].oInit.onModifyActionForm;
+                
+                if (typeof dataTableOnModifyActionForm !== 'undefined') {
+                    const onModifyActionForm = document.getElementById (dataTableOnModifyActionForm);
+                    if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
+                        const modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
+                        modifyButton.setAttribute ('onclick', 
+                            'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", [' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '])');
+                    } else {
+                        if (!this.OnModifyActionFormAlert) {
+                            modifyButton.style.display = 'none';
+                        }
                     }
                 }
-            }
-            
-            // Assignment of the action to the cancel button
-            var deleteButton = e.childNodes.item(3).childNodes.item(0).childNodes.item(0).children.namedItem('dtDeleteButton');
-            var dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
-
-            if (typeof dataTableOnDeleteActionForm !== 'undefined') {
-                var onDeleteActionForm = document.getElementById (dataTableOnDeleteActionForm);
-                if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
-                    var deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
-                    deleteButton.setAttribute ('onclick', 
-                        'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", [' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '])');
-                } else {
-                    if (!this.OnDeleteActionFormAlert) {
-                        alert ('Undefined form "' + dataTableOnDeleteActionForm + '" defined in OnDeleteActionForm property of the datatable');
-                        this.OnDeleteActionFormAlert = true;
+                
+                // Assignment of the action to the cancel button
+                const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
+    
+                let deleteButton = null;
+                e.childNodes.forEach (element => {
+                    deleteButton = element.querySelector('#dtDeleteButton');
+                });
+                if (deleteButton) {
+                    const onDeleteActionForm = document.getElementById (dataTableOnDeleteActionForm);
+                    if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
+                        const deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
+                        deleteButton.setAttribute ('onclick', 
+                            'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", [' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '])');
+                    } else {
+                        if (!this.OnDeleteActionFormAlert) {
+                            deleteButton.style.display = 'none';
+                        }
                     }
                 }
             }
@@ -262,6 +268,7 @@ myo = {
             });
         },
         populateFields (form, data) {
+            // find all the input fields in the form and populate
             inputfields = form.getElementsByTagName('input');
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
@@ -304,6 +311,25 @@ myo = {
                             });    
                         }
                         myo.UI.changeField(field);
+                    }
+                }        
+            });
+            // find all the textarea fields in the form and populate
+            inputfields = form.getElementsByTagName('textarea');
+            Array.from(inputfields).forEach (function(field) {
+                if ("fieldname" in field.dataset) {
+                    field.value = '';
+                    if (field.dataset.fieldname in data) {
+                        if ("fieldname" in field.dataset) {
+                            switch(field.type) {
+                                case 'checkbox':
+                                    field.checked = data[field.dataset.fieldname] === "1";
+                                    myo.UI.changeField(field);
+                                    break;
+                                default:
+                                    field.value = data[field.dataset.fieldname];
+                            }
+                        }
                     }
                 }        
             });

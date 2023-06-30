@@ -5,6 +5,8 @@ namespace myodevops\ALTErnative;
 use Illuminate\Support\ServiceProvider as ServiceProvider;
 use Illuminate\Contracts\View\Factory;
 use myodevops\ALTErnative\Views\Components\Form;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 
 class ALTErnativeServiceProvider extends ServiceProvider
 {
@@ -12,11 +14,13 @@ class ALTErnativeServiceProvider extends ServiceProvider
 
     protected $formComponents = [
         'datatable' => Form\Datatable::class,
+        'errlog-datatable' => Form\ErrLogDatatable::class,
         'datatable-actions' => Form\DatatableActions::class,
         'input-date' => Form\InputDate::class,
         'input-datetime' => Form\InputDateTime::class,
         'input-email' => Form\InputEmail::class,
         'input-number' => Form\InputNumber::class,
+        'input-textarea' => Form\InputTextarea::class,
         'input-time' => Form\InputTime::class,
         'input-url' => Form\InputUrl::class,
         'input' => Form\Input::class,
@@ -49,6 +53,21 @@ class ALTErnativeServiceProvider extends ServiceProvider
         $this->loadViews();
         $this->loadComponents();
         $this->copyPublics();
+
+        $altesqlitefile = database_path('altesqlite.sq3');
+        Config::set('database.connections.altesqlite', [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', $altesqlitefile),
+            'prefix' => '',
+        ]);
+        
+        if (!File::exists($altesqlitefile)) {
+            File::put($altesqlitefile, '');
+        } else {
+            File::touch($altesqlitefile);
+        }
+
+        $this->loadMigrationsFrom(__DIR__ . '/Migrations');
     }
 
     /**

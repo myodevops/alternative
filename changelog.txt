@@ -9,3 +9,4 @@ v00.04.01 - 12.05.2023 - Checking of the name of some components in the datatabl
 v00.05.01 - 28.05.2023 - Sweetalert implementation
 v00.05.02 - 28.05.2023 - Bug fix on options
 v00.06.00 - 12.06.2023 - Option (Select2) Ajax data source implementation
+v00.07.00 - 30.06.2023 - Implementation of the Error Log

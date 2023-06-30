@@ -4,9 +4,15 @@
                   data-actionread="{{ $actionread }}"
                   icon="fas fa-pen-to-square" 
                   size='lg' 
+                  readonly
                   disable-animations>
     {{ $slot }}
     <x-slot name="footerSlot">
+    @if($readonly)
+    <x-adminlte-button theme="success" 
+                           label="{{ __('Ok') }}" 
+                           data-dismiss="modal"/>
+    @else
         <x-adminlte-button id="{{ $id . '-button' }}" 
                            theme="success" 
                            label="{{ __('Submit') }}" 
@@ -15,6 +21,7 @@
         <x-adminlte-button theme="danger" 
                            label="{{ __('Cancel') }}" 
                            data-dismiss="modal"/>
+    @endif
     </x-slot>
 </x-adminlte-modal>
 
