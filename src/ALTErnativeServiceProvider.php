@@ -63,8 +63,6 @@ class ALTErnativeServiceProvider extends ServiceProvider
         
         if (!File::exists($altesqlitefile)) {
             File::put($altesqlitefile, '');
-        } else {
-            File::touch($altesqlitefile);
         }
 
         $this->loadMigrationsFrom(__DIR__ . '/Migrations');
