@@ -68,7 +68,7 @@ myo = {
                     if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
                         const modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
                         modifyButton.setAttribute ('onclick', 
-                            'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", [' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '])');
+                            'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", ["' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '"])');
                     } else {
                         if (!this.OnModifyActionFormAlert) {
                             modifyButton.style.display = 'none';
@@ -88,7 +88,7 @@ myo = {
                     if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
                         const deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
                         deleteButton.setAttribute ('onclick', 
-                            'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", [' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '])');
+                            'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", ["' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '"])');
                     } else {
                         if (!this.OnDeleteActionFormAlert) {
                             deleteButton.style.display = 'none';
@@ -293,8 +293,13 @@ myo = {
                 if ("fieldname" in field.dataset) {
                     if (field.dataset.fieldname in data) {
                         if (field.hasAttribute('data-ajax--url')) {
+                            field.innerHTML = '';
                             url = field.getAttribute('data-ajax--url');
-                            selected = data[field.dataset.fieldname].split('|');
+                            if (data[field.dataset.fieldname].hasOwnProperty('split')) {
+                                selected = data[field.dataset.fieldname].split('|');
+                            } else {
+                                selected = [data[field.dataset.fieldname]];
+                            }
                             selected.forEach (function(singlesel) {
                                 response = myo.WS.callReadRequest  (url + "/" + singlesel, 
                                                                     document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
@@ -370,6 +375,7 @@ myo = {
                 case myo.UI.alertType.OperativeSuccess:
                     Swal.fire({
                         position: 'top-end',
+                        type: 'success',
                         icon: 'success',
                         text: message,
                         showConfirmButton: false,
@@ -379,24 +385,28 @@ myo = {
                 case myo.UI.alertType.OperativeInfo:
                     Swal.fire({ 
                         text: message,
+                        type: 'info',
                         icon: 'info'
                     });
                     break;
                 case myo.UI.alertType.OperativeWarning:
                     Swal.fire({ 
                         text: message,
+                        type: 'warning',
                         icon: 'warning'
                     });
                     break;
                 case myo.UI.alertType.OperativeError:
                     Swal.fire({ 
                         text: message,
+                        type: 'error',
                         icon: 'error'
                     });                    
                     break;
                 case myo.UI.alertType.RuntimeError:
                     Swal.fire({ 
                         text: message,
+                        type: 'error',
                         icon: 'error',
                         iconHtml: '!'
                     });                    
