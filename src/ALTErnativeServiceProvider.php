@@ -15,6 +15,7 @@ class ALTErnativeServiceProvider extends ServiceProvider
     protected $formComponents = [
         'datatable' => Form\Datatable::class,
         'errlog-datatable' => Form\ErrLogDatatable::class,
+        'laravellog-datatable' => Form\LaravelLogDatatable::class,
         'datatable-actions' => Form\DatatableActions::class,
         'input-date' => Form\InputDate::class,
         'input-datetime' => Form\InputDateTime::class,
@@ -54,10 +55,10 @@ class ALTErnativeServiceProvider extends ServiceProvider
         $this->loadComponents();
         $this->copyPublics();
 
-        $altesqlitefile = database_path('altesqlite.sq3');
+        $altesqlitefile = 'altesqlite.sq3';
         Config::set('database.connections.altesqlite', [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', $altesqlitefile),
+            'database' => database_path($altesqlitefile),
             'prefix' => '',
         ]);
         
