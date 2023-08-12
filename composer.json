@@ -2,7 +2,7 @@
     "name": "myodevops/alternative",
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
-    "version": "00.08.02",
+    "version": "00.09.01",
 	"authors": [
         {
             "name": "nicola-myo",

@@ -11,6 +11,7 @@ myo = {
         dttable: null,
         OnDeleteActionFormAlert: false,
         OnModifyActionFormAlert: false,
+        OnInsertActionFormAlert: false,
 
         initializeDataTable (tableRef) {
             table = document.getElementById(tableRef);
@@ -31,15 +32,25 @@ myo = {
                 } );
 
                 const insertAllowed = dttable.context[0].oInit.insertAllowed;
-                const dataTableOnModifyActionForm = dttable.context[0].oInit.onModifyActionForm;    
-                if ((typeof insertAllowed !== 'undefined') && (typeof dataTableOnModifyActionForm !== 'undefined')) {
+                const dataTableOnModifyActionForm = dttable.context[0].oInit.onModifyActionForm;
+                const dataTableOnInsertActionForm = dttable.context[0].oInit.onInsertActionForm;
+                if (typeof insertAllowed !== 'undefined') {
                     if (insertAllowed) {
-                        dttable.button().add(0, {
-                            text: '<i class="fa-solid fa-plus"></i>',
-                            action: function ( e, dt, node, config ) {
-                                myo.UI.onClickInsertDataTable(dataTableOnModifyActionForm);
-                            }
-                        });    
+                        if (typeof dataTableOnInsertActionForm !== 'undefined') {
+                            dttable.button().add(0, {
+                                text: '<i class="fa-solid fa-plus"></i>',
+                                action: function ( e, dt, node, config ) {
+                                    myo.UI.onClickInsertDataTable(dataTableOnInsertActionForm);
+                                }
+                            });        
+                        } else if (typeof dataTableOnModifyActionForm !== 'undefined') {
+                            dttable.button().add(0, {
+                                text: '<i class="fa-solid fa-plus"></i>',
+                                action: function ( e, dt, node, config ) {
+                                    myo.UI.onClickInsertDataTable(dataTableOnModifyActionForm);
+                                }
+                            });        
+                        }
                     }
                 }
             });
