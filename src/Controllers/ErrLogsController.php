@@ -17,7 +17,7 @@ class ErrLogsController extends Controller
     {
         $errlog = new Errorlog();
 
-        return $errlog->getData ($_GET, $errlog, "\myodevops\ALTErnative\Resources\ErrLogsResource");
+        return $errlog->getData ($_GET, $errlog->query(), "\myodevops\ALTErnative\Resources\ErrLogsResource", false);
     }
 
     /**

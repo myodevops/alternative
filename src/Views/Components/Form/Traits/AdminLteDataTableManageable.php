@@ -3,5 +3,5 @@ namespace myodevops\ALTErnative\Views\Components\Form\Traits;
 
 interface AdminLteDataTableManageable 
 {
-    public function getData ($get, $model, $jsonRes);
+    public function getData ($get, $model, $jsonRes, $requerable);
 }

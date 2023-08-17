@@ -1,6 +1,8 @@
 <?php
 namespace myodevops\ALTErnative\Views\Components\Form\Traits;
 
+use Illuminate\Support\Facades\DB;
+
 /*
 Example:
 http://127.0.0.1:8000/api/users?draw=1
@@ -18,36 +20,40 @@ trait AdminLteDataTableManage
     /**
      * Undocumented function
      *
-     * @param Array $get
-     * @param Object $model
-     * @param String $fields
+     * @param Array $get The get of the request call of the datatable
+     * @param Object $query The query for estrapolate the list of records in the datatables
+     * @param JsonResource $jsonRes The JsonResource of the necessary fields and his eventually transcoding
+     * @param boolean $requerable True if it is necessary a requery for the fields with aliases
      * @return void
      */
-    public function getData ($get, $model, $jsonRes) {
+    public function getData ($get, $query, $jsonRes, $requerable=true) {
         // Check the configuration
         if (!$this->chechConfiguration ($get)) {
             return ($this->setError($this->errorText));
         }
 
-        // Calculate the total of the records of the model
-        $totalcount = $model->count ();
+        // Make a query on the query for filtering fields in join
+        if ($requerable) {
+            $requery = DB::table($query->from);
+            $requery = $requery->fromSub($query, 'alternativepackagealias');    
+        } else {
+            $requery = $query;
+        }
+        $totalcount = $requery->count ();
         $filteredcount = $totalcount;
-
-        // Apply the filter
-        $query = $model->query();
         if ($get['search']['value'] !== '') {
-            $this->applyLikeFilter($query, $get);
+            $this->applyLikeFilter($requery, $get);
             // Calculate the total of the records filtered
-            $filteredcount = $query->count ();
+            $filteredcount = $requery->count ();
         }
 
         // Apply the order
-        $this->applyOrder($query, $get);
+        $this->applyOrder($requery, $get);
 
         // Apply the page start and the no. of viewing records
-        $query = $query->skip($get['start'])
-                       ->take($get['length']);
-        $data = $query->get();
+        $requery = $requery->skip($get['start'])
+                           ->take($get['length']);
+        $data = $requery->get();
 
         // Add the column of the buttons
         $this->addButtons($data);
@@ -117,8 +123,10 @@ trait AdminLteDataTableManage
 
     private function addButtons (&$data) {
         // Add the buttons on every line
+        $id = 0;
         foreach ($data as $line) {
-            $line->actions = '<nobr>' . view('alternative::components.form.datatable-actions', ['id' => $line->id]) . '</nobr>';
+            $id++;
+            $line->actions = '<nobr>' . view('alternative::components.form.datatable-actions', ['id' => $id]) . '</nobr>';
         }
     }
 

@@ -16,3 +16,4 @@ v00.07.03 - 30.06.2023 - nicola-myo      Bug fixing of the creation of the errlo
 v00.07.04 - 18.07.2023 - nicola-myo      Add the class Utils and the method Utils::checkEmptyValues
 v00.08.01 - 12.08.2023 - nicola-myo      Add the management and visualization of the laravel.log file
 v00.09.01 - 13.08.2023 - nicola-myo      Add datatable property onInsertActionForm
+v00.09.02 - 17.08.2023 - nicola-myo      Using of the query instead the model for managing records in datatables
