@@ -164,6 +164,10 @@ myo = {
                 return true;
             }
 
+            if (keys = []) {
+                return true;
+            }
+
             if (keys.count == 0) {
                 return false;
             }
