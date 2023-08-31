@@ -2,8 +2,8 @@
                   title="{{ $title }}" 
                   theme="{{ $theme }}" 
                   data-actionread="{{ $actionread }}"
-                  icon="fas fa-pen-to-square" 
-                  size='lg' 
+                  icon="fas fa-pen-to-square"  
+                  size="{{ $size }}"
                   readonly
                   disable-animations>
     {{ $slot }}

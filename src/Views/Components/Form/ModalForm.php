@@ -17,6 +17,7 @@ class ModalForm extends Component
     public $method = '';
     public $readonly = '';
     public $theme = '';
+    public $size = '';
 
     /**
      * Constructor of the class
@@ -28,6 +29,8 @@ class ModalForm extends Component
      * @param boolean $readonly True if the form is readonly
      * @param string $theme Select a theme for the modal:
      *                      light | danger | info | success | warning
+     * @param string $size Select the width size of the form:
+     *                      sm | lg | xl
      */
     public function __construct($id, 
                                 $title, 
@@ -35,7 +38,8 @@ class ModalForm extends Component
                                 $actionwrite = '#',
                                 $method = 'get', 
                                 $readonly = false,
-                                $theme='light')
+                                $theme='light',
+                                $size='lg')
     {
         $this->id = $id;
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
@@ -44,6 +48,7 @@ class ModalForm extends Component
         $this->method = $method;
         $this->readonly = $readonly;
         $this->theme = $theme;
+        $this->size = $size;
     }
 
     /**
