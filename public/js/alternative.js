@@ -12,6 +12,7 @@ myo = {
         OnDeleteActionFormAlert: false,
         OnModifyActionFormAlert: false,
         OnInsertActionFormAlert: false,
+        OnInfoActionFormAlert: false,
 
         initializeDataTable (tableRef) {
             table = document.getElementById(tableRef);
@@ -87,7 +88,7 @@ myo = {
                     }
                 }
                 
-                // Assignment of the action to the cancel button
+                // Assignment of the action to the delete button
                 const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
     
                 let deleteButton = null;
@@ -103,6 +104,26 @@ myo = {
                     } else {
                         if (!this.OnDeleteActionFormAlert) {
                             deleteButton.style.display = 'none';
+                        }
+                    }
+                }
+
+                // Assignment of the action to the info button
+                const dataTableOnInfoActionForm = this.api().context[0].oInit.onInfoActionForm;
+    
+                let infoButton = null;
+                e.childNodes.forEach (element => {
+                    infoButton = element.querySelector('#dtInfoButton');
+                });
+                if (infoButton) {
+                    const onInfoActionForm = document.getElementById (dataTableOnInfoActionForm);
+                    if (typeof(onInfoActionForm) != 'undefined' && onInfoActionForm != null) {
+                        const infoKey = myo.UI.getListKeys (dataTableOnInfoActionForm, 'action');   // Use the array of the key of the method as primary key
+                        infoButton.setAttribute ('onclick', 
+                            'myo.UI.onClickInfoDataTable("' + dataTableOnInfoActionForm + '", ["' + Object.values(myo.UI.getObjKeys (infoKey, settings)).join(', ') + '"])');
+                    } else {
+                        if (!this.OnInfoActionFormAlert) {
+                            infoButton.style.display = 'none';
                         }
                     }
                 }
@@ -142,6 +163,15 @@ myo = {
             // Show the confirm modal
             jQuery('#' + modalname).modal('show');
 
+        },
+        onClickInfoDataTable(modalname, arraykey){
+            jQuery.noConflict();
+
+            // Populate the fields
+            this.populateFormFields (modalname, arraykey);
+
+            // Show the confirm modal
+            jQuery('#' + modalname).modal('show');            
         },
         validateEmailField(emailField, event) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
