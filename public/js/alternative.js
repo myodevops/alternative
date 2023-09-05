@@ -197,7 +197,7 @@ myo = {
                 return true;
             }
 
-            if (keys = []) {
+            if (keys === []) {
                 return true;
             }
 
