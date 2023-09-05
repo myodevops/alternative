@@ -19,7 +19,7 @@ myo = {
             if (typeof(table) == 'undefined' || table == null) {
                 alert ('Undefined datatableform "' + tableRef + '" defined as datatable');
             }
-            jQuery('#'+tableRef).on('init.dt', function (e) {
+            jQuery('#'+tableRef).on('preInit.dt', function (e) {
                 dttable = jQuery('#'+tableRef).DataTable();
 
                 for (i = dttable.buttons().length; i > 0; i--) {
@@ -67,6 +67,10 @@ myo = {
             });
         },
         OnCreatedRow (e, settings) {
+            // Assignment of the action to the delete button
+            const dataTableOnModifyActionForm = this.api().context[0].oInit.onModifyActionForm;
+            const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
+            
             // Assignment of the action to the modify button
             let modifyButton = null;
             e.childNodes.forEach (element => {
@@ -85,9 +89,6 @@ myo = {
                 }
             }
                 
-            // Assignment of the action to the delete button
-            const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
-
             let deleteButton = null;
             e.childNodes.forEach (element => {
                 deleteButton = element.querySelector('#dtDeleteButton');

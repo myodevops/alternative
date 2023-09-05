@@ -21,3 +21,4 @@ v00.10.01 - 30.08.2023 - nicola-myo      Bug fixing on alternative.js
 v00.10.02 - 31.08.2023 - nicola-myo      Info button added to the actions of the datatable record 
 v00.10.03 - 31.08.2023 - nicola-myo      Size property implemented for the alternative-modal-form controll
 v00.10.04 - 05.09.2023 - nicola-myo      Add the onClickInfoActionCustom property to the DataTable in alternative.js
+v00.10.05 - 05.09.2023 - nicola-myo      Do not show the standard button initializing the datatable
