@@ -19,8 +19,8 @@ myo = {
             if (typeof(table) == 'undefined' || table == null) {
                 alert ('Undefined datatableform "' + tableRef + '" defined as datatable');
             }
-            $('#'+tableRef).on('init.dt', function (e) {
-                dttable = $('#'+tableRef).DataTable();
+            jQuery('#'+tableRef).on('init.dt', function (e) {
+                dttable = jQuery('#'+tableRef).DataTable();
 
                 for (i = dttable.buttons().length; i > 0; i--) {
                     dttable.buttons(i-1).remove();
@@ -57,7 +57,7 @@ myo = {
             });
 
             tbody = table.getElementsByTagName('tbody')[0];
-            $(tbody).on('click', 'tr', function () {
+            jQuery(tbody).on('click', 'tr', function () {
                 if (jQuery(this).hasClass('selected')) {
                     jQuery(this).removeClass('selected');
                 } else {
@@ -73,58 +73,60 @@ myo = {
                 modifyButton = element.querySelector('#dtModifyButton');
             });
             if (modifyButton) {
-                const dataTableOnModifyActionForm = this.api().context[0].oInit.onModifyActionForm;
-                
-                if (typeof dataTableOnModifyActionForm !== 'undefined') {
-                    const onModifyActionForm = document.getElementById (dataTableOnModifyActionForm);
-                    if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
-                        const modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
-                        modifyButton.setAttribute ('onclick', 
-                            'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", ["' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '"])');
-                    } else {
-                        if (!this.OnModifyActionFormAlert) {
-                            modifyButton.style.display = 'none';
-                        }
+                const onModifyActionForm = document.getElementById (dataTableOnModifyActionForm);
+                if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
+                    const modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
+                    modifyButton.setAttribute ('onclick', 
+                        'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", ["' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '"])');
+                } else {
+                    if (!this.OnModifyActionFormAlert) {
+                        modifyButton.style.display = 'none';
                     }
                 }
+            }
                 
-                // Assignment of the action to the delete button
-                const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
-    
-                let deleteButton = null;
-                e.childNodes.forEach (element => {
-                    deleteButton = element.querySelector('#dtDeleteButton');
-                });
-                if (deleteButton) {
-                    const onDeleteActionForm = document.getElementById (dataTableOnDeleteActionForm);
-                    if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
-                        const deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
-                        deleteButton.setAttribute ('onclick', 
-                            'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", ["' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '"])');
-                    } else {
-                        if (!this.OnDeleteActionFormAlert) {
-                            deleteButton.style.display = 'none';
-                        }
-                    }
-                }
+            // Assignment of the action to the delete button
+            const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
 
-                // Assignment of the action to the info button
-                const dataTableOnInfoActionForm = this.api().context[0].oInit.onInfoActionForm;
-    
-                let infoButton = null;
-                e.childNodes.forEach (element => {
-                    infoButton = element.querySelector('#dtInfoButton');
-                });
-                if (infoButton) {
-                    const onInfoActionForm = document.getElementById (dataTableOnInfoActionForm);
-                    if (typeof(onInfoActionForm) != 'undefined' && onInfoActionForm != null) {
-                        const infoKey = myo.UI.getListKeys (dataTableOnInfoActionForm, 'action');   // Use the array of the key of the method as primary key
+            let deleteButton = null;
+            e.childNodes.forEach (element => {
+                deleteButton = element.querySelector('#dtDeleteButton');
+            });
+            if (deleteButton) {
+                const onDeleteActionForm = document.getElementById (dataTableOnDeleteActionForm);
+                if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
+                    const deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
+                    deleteButton.setAttribute ('onclick', 
+                        'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", ["' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '"])');
+                } else {
+                    if (!this.OnDeleteActionFormAlert) {
+                        deleteButton.style.display = 'none';
+                    }
+                }
+            }
+
+            // Assignment of the action to the info button
+            const dataTableOnInfoActionForm = this.api().context[0].oInit.onInfoActionForm;
+            const dataTableonClickInfoActionCustom = this.api().context[0].oInit.onClickInfoActionCustom;
+
+            let infoButton = null;
+            e.childNodes.forEach (element => {
+                infoButton = element.querySelector('#dtInfoButton');
+            });
+            if (infoButton) {
+                const onInfoActionForm = document.getElementById (dataTableOnInfoActionForm);
+                if (typeof(onInfoActionForm) != 'undefined' && onInfoActionForm != null) {
+                    const infoKey = myo.UI.getListKeys (dataTableOnInfoActionForm, 'actionread');   // Use the array of the key of the method as primary key
+                    if (dataTableonClickInfoActionCustom != null) {
+                        infoButton.setAttribute ('onclick', 
+                            dataTableonClickInfoActionCustom + '("' + dataTableOnInfoActionForm + '", ["' + Object.values(myo.UI.getObjKeys (infoKey, settings)).join(', ') + '"])');
+                    } else {
                         infoButton.setAttribute ('onclick', 
                             'myo.UI.onClickInfoDataTable("' + dataTableOnInfoActionForm + '", ["' + Object.values(myo.UI.getObjKeys (infoKey, settings)).join(', ') + '"])');
-                    } else {
-                        if (!this.OnInfoActionFormAlert) {
-                            infoButton.style.display = 'none';
-                        }
+                    }
+                } else {
+                    if (!this.OnInfoActionFormAlert) {
+                        infoButton.style.display = 'none';
                     }
                 }
             }
@@ -171,7 +173,7 @@ myo = {
             this.populateFormFields (modalname, arraykey);
 
             // Show the confirm modal
-            jQuery('#' + modalname).modal('show');            
+            jQuery('#' + modalname).modal('show');
         },
         validateEmailField(emailField, event) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
