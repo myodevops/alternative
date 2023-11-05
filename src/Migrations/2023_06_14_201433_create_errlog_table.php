@@ -17,7 +17,7 @@ class CreateErrlogTable extends Migration
             $table->id();
             $table->text('message');
             $table->bigInteger('userid');
-            $table->enum('type', ['warning', 'error', 'fatal', 'debug']);
+            $table->enum('type', ['warning', 'error', 'fatal', 'notify', 'debug']);
             $table->string('info', 250);
             $table->timestamp('datetime');
         });

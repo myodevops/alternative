@@ -23,3 +23,4 @@ v00.10.03 - 31.08.2023 - nicola-myo      Size property implemented for the alter
 v00.10.04 - 05.09.2023 - nicola-myo      Add the onClickInfoActionCustom property to the DataTable in alternative.js
 v00.10.05 - 05.09.2023 - nicola-myo      Do not show the standard button initializing the datatable
 v00.10.06 - 05.09.2023 - nicola-myo      Bug fixing on alternative.js
+v00.10.07 - 05.11.2023 - nicola-myo      Add the notify message type in errlog table
