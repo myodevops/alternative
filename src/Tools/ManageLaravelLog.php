@@ -9,7 +9,7 @@ class ManageLaravelLog {
     private $storage_path;
 
     public function __construct() {
-        $this->storage_path = env ('LARAVEL_LOG_PATH', storage_path('logs') . "\laravel.log");
+        $this->storage_path = env ('LARAVEL_LOG_PATH', storage_path('logs') . "/laravel.log");
     }
 
     /**

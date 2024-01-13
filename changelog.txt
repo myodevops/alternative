@@ -24,3 +24,4 @@ v00.10.04 - 05.09.2023 - nicola-myo      Add the onClickInfoActionCustom propert
 v00.10.05 - 05.09.2023 - nicola-myo      Do not show the standard button initializing the datatable
 v00.10.06 - 05.09.2023 - nicola-myo      Bug fixing on alternative.js
 v00.10.07 - 05.11.2023 - nicola-myo      Add the notify message type in errlog table
+v00.10.08 - 13.01.2023 - nicola-myo      Bug fix creating the Laravel.log name with path
