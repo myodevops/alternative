@@ -3,7 +3,8 @@
                   theme="{{ $theme }}"
                   icon="fas fa-circle-question" 
                   size='sm' 
-                  disable-animations>
+                  disable-animations
+                  static-backdrop>
     {{ $slot }}
     <x-slot name="footerSlot">
         <x-adminlte-button id="{{ $id . '-button' }}" theme="success" label="{{ $oklabel }}" data-action="{{ $action }}" data-method="{{ $method }}" data-dismiss="modal"/>

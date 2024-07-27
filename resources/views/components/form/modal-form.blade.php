@@ -5,7 +5,8 @@
                   icon="fas fa-pen-to-square"  
                   size="{{ $size }}"
                   readonly
-                  disable-animations>
+                  disable-animations
+                  static-backdrop>
     {{ $slot }}
     <x-slot name="footerSlot">
     @if($readonly)
