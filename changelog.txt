@@ -26,3 +26,4 @@ v00.10.06 - 05.09.2023 - nicola-myo      Bug fixing on alternative.js
 v00.10.07 - 05.11.2023 - nicola-myo      Add the notify message type in errlog table
 v00.10.08 - 13.01.2023 - nicola-myo      Bug fix creating the Laravel.log name with path
 v00.10.09 - 27.07.2024 - nicola-myo      The adminlte modal forms do not close when clicking outside them
+v00.10.10 - 26.10.2024 - nicola-myo      Include the daterangepicker sources in the library instead installing laravel-admin (obsolete)

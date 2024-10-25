@@ -2,7 +2,7 @@
     "name": "myodevops/alternative",
     "description": "Evolutions of layouts and components of Laravel AdminLTE",
 	"license": "MIT",
-    "version": "00.10.09",
+    "version": "00.10.10",
 	"authors": [
         {
             "name": "nicola-myo",
@@ -37,6 +37,18 @@
             {
                 "from": "css/alternative.css",
                 "to": "public/css/alternative.css"
+            },
+            {
+                "from": "js/daterangepicker.js",
+                "to": "public/js/daterangepicker.js"
+            },
+            {
+                "from": "js/daterangepicker.min.js",
+                "to": "public/js/daterangepicker.min.js"
+            },
+            {
+                "from": "css/daterangepicker.css",
+                "to": "public/css/daterangepicker.css"
             }
         ]
     },
