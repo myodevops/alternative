@@ -1,0 +1,16 @@
+{
+    "name": "ALTErnative",
+    "version": "0.20.10",
+    "private": true,
+    "description": "Laravel library based on Laravel AdminLTE",
+    "dependencies": {
+      "select2": "^4.0.13",
+      "moment": "^2.29.1",
+      "tempusdominus-bootstrap-4": "^5.1.2",
+      "datatables.net": "^1.10.25",
+      "datatables.net-bs4": "^1.10.25",
+      "bootstrap": "^4.6.2",
+      "jquery": "^3.6.0"
+    }
+  }
+  

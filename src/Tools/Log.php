@@ -24,7 +24,7 @@ class Log {
         self::writeRecord ($function, $message, 'debug');
     }
 
-    private function writeRecord ($function, $message, $type) {
+    private static function writeRecord ($function, $message, $type) {
         $info = '<' . filter_input(INPUT_SERVER, 'REQUEST_URI') . '> <' . basename(__FILE__) . '> <' . filter_input(INPUT_SERVER, 'REMOTE_ADDR') . '>';
         $query = "INSERT INTO errorlogs
                   (message, userid, type, info, datetime)
