@@ -73,7 +73,7 @@ trait AdminLteDataTableManage
             case !isset ($get['start']):
             case !isset ($get['length']):
             case !isset ($get['search']['value']):
-            case !is_array ($get['columns']):
+            case !isset ($get['columns']) || !is_array ($get['columns']):
                 $this->errorText = 'Bad definition of the get variables in AdminLteDataTableManage::getData';
                 return false;
         }
@@ -91,27 +91,25 @@ trait AdminLteDataTableManage
     }
 
     private function applyLikeFilter (&$query, $get) {
-        // Apply the filters to the columns that are filterables
-        $isfirst = true;
-        foreach ($get['columns'] as $column) {
-            // Determine if the column is filterable
-            $filterable = true;
-            if (isset ($column['searchable'])) {
-                if ($column['searchable'] === 'false') {
-                    $filterable = false;
+        // Apply the filters to the columns that are filterables.
+        // The conditions are grouped in parentheses so that the OR between the columns
+        // doesn't bypass the conditions already present in the query
+        $query = $query->where(function ($subquery) use ($get) {
+            foreach ($get['columns'] as $column) {
+                // Determine if the column is filterable
+                $filterable = true;
+                if (isset ($column['searchable'])) {
+                    if ($column['searchable'] === 'false') {
+                        $filterable = false;
+                    }
+                }
+
+                if ($filterable) {
+                    // Filter the columns based on filter string
+                    $subquery->orWhere($column['data'], 'LIKE', '%' . $get['search']['value'] . '%');
                 }
             }
-
-            if ($filterable) {
-                // Filter the columns based on filter string
-                if ($isfirst) {
-                    $query = $query->where($column['data'], 'LIKE', '%' . $get['search']['value'] . '%');
-                } else {
-                    $query = $query->orwhere($column['data'], 'LIKE', '%' . $get['search']['value'] . '%');
-                }    
-                $isfirst = false;
-            }
-        }
+        });
     }
 
     private function applyOrder (&$query, $get) {
@@ -122,15 +120,16 @@ trait AdminLteDataTableManage
     }
 
     private function addButtons (&$data) {
-        // Add the buttons on every line
-        $id = 0;
+        // Add the buttons on every line.
+        // The buttons have no id (it would be repeated on every line): the JS finds them with the data-dtaction attribute
+        $buttons = '<nobr>' . view('alternative::components.form.datatable-actions') . '</nobr>';
         foreach ($data as $line) {
-            $id++;
-            $line->actions = '<nobr>' . view('alternative::components.form.datatable-actions', ['id' => $id]) . '</nobr>';
+            $line->actions = $buttons;
         }
     }
 
     private function setError ($error) {
-        return json_decode('{ "Error": ' . $error . ' }');
+        // "error" is the property that DataTables shows to the user in the server-side processing
+        return (object)array ("error" => $error);
     }
 }

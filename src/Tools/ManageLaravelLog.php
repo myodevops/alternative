@@ -18,6 +18,12 @@ class ManageLaravelLog {
      * @return bool TRUE if ok, else FALSE if error
      */
     public function processLog () {
+        // Nothing to process if the laravel.log file doesn't exist: empty the table of the old records
+        if (!file_exists($this->storage_path)) {
+            LaravelLog::truncate ();
+            return TRUE;
+        }
+
         // Check if the datetime of the laravel.log file is changed from the last processing
         $LaravelLogLastTimeStamp = filemtime($this->storage_path);
         $LaravelLogLastDTText = date('Y-m-d H:i:s', $LaravelLogLastTimeStamp);
@@ -46,7 +52,8 @@ class ManageLaravelLog {
                         $previousException = TRUE;
                     } else {
                         $stackLine = $this->parseStackLine ($line);
-                        if ($stackLine !== NULL) {
+                        // Skip the stack lines that precede the first log line
+                        if ($stackLine !== NULL && $count > 0) {
                             array_push ($records[$count - 1]["stacktrace"], $stackLine); 
                         }
                     }
@@ -136,8 +143,10 @@ class ManageLaravelLog {
                 $laravellog->save ();
             } catch (\Exception $e) {
                 Log::Fatal ("Error saving the Laravel log records in $method.", $e->getMessage());
-                return NULL;
+                return FALSE;
             }
         }
+
+        return TRUE;
     }
 }

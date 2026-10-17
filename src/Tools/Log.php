@@ -1,11 +1,9 @@
-<?php 
+<?php
 
 namespace myodevops\ALTErnative\Tools;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-use function PHPUnit\Framework\isNull;
 
 class Log {
     static function Warning ($function, $message)  {
@@ -20,17 +18,26 @@ class Log {
         self::writeRecord ($function, $message, 'fatal');
     }
 
+    static function Notify ($function, $message)  {
+        self::writeRecord ($function, $message, 'notify');
+    }
+
     static function Debug ($function, $message)  {
         self::writeRecord ($function, $message, 'debug');
     }
 
     private static function writeRecord ($function, $message, $type) {
-        $info = '<' . filter_input(INPUT_SERVER, 'REQUEST_URI') . '> <' . basename(__FILE__) . '> <' . filter_input(INPUT_SERVER, 'REMOTE_ADDR') . '>';
+        // Find the file and the line of the application code that called the log:
+        // [0] is the call to writeRecord from Warning/Error/..., [1] is the call from the application
+        $trace = debug_backtrace (DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $caller = isset ($trace[1]['file']) ? basename ($trace[1]['file']) . ':' . $trace[1]['line'] : '';
+
+        $info = '<' . request()->getRequestUri() . '> <' . $caller . '> <' . request()->ip() . '>';
         $query = "INSERT INTO errorlogs
                   (message, userid, type, info, datetime)
                   VALUES (:message, :userid, :type, :info, :datetime)";
         $userid = Auth::id();
-        if (isNull($userid)) {
+        if (is_null($userid)) {
             $userid = 0;
         }
         DB::connection('altesqlite')->statement ($query, [

@@ -43,30 +43,6 @@ class ALTErnativeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(Form\Traits\AdminLteDataTableManageable::class, Form\Traits\AdminLteDataTableManage::class);
-
-        // Add automatically the key "auth.method" if not already present
-        if (!config()->has('auth.method')) {
-            config(['auth.method' => env('AUTH_METHOD', 'sanctum')]);
-        }        
-
-        // Add the configuration of the Sanctum URLs in AdminLTE  
-        if (!config()->has('adminlte.password_reset_url')) {
-            config([
-                'adminlte.use_route_url' => true,
-                'adminlte.password_reset_url' => 'password.request',
-                'adminlte.password_email_url' => 'password.email',
-                'adminlte.password_update_url' => 'password.update',
-                'adminlte.login_url' => 'login',
-                'adminlte.logout_url' => 'logout',
-                'adminlte.register_url' => 'register',
-            ]);
-        }
-
-        // Update the config file
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/alternative.php', 'alternative'
-        );
-        
     }
 
     /**
@@ -81,21 +57,15 @@ class ALTErnativeServiceProvider extends ServiceProvider
         $this->registerPublishes();
         $this->registerBladeDirectives();
 
-        $altesqlitefile = 'altesqlite.sq3';
+        $altesqlitefile = database_path ('altesqlite.sq3');
         Config::set('database.connections.altesqlite', [
             'driver' => 'sqlite',
-            'database' => database_path($altesqlitefile),
+            'database' => $altesqlitefile,
             'prefix' => '',
         ]);
         
         if (!File::exists($altesqlitefile)) {
             File::put($altesqlitefile, '');
-        }
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                \myodevops\ALTErnative\Console\Commands\InstallAlternative::class,
-            ]);
         }
 
         $this->loadMigrationsFrom(__DIR__ . '/Migrations');
@@ -153,11 +123,6 @@ class ALTErnativeServiceProvider extends ServiceProvider
 
     private function registerPublishes()
     {
-        // Publication of the configuration file alternative.php
-        $this->publishes([
-            __DIR__.'/../config/alternative.php' => config_path('alternative.php'),
-        ], 'alternative-config');
-
         // Publication of the asset files (JS, CSS, immagini ecc.)
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/myodevops/alternative'),
@@ -173,9 +138,5 @@ class ALTErnativeServiceProvider extends ServiceProvider
         Blade::directive('alternativeCss', function ($expression) {
             return "<?php echo '<link rel=\"stylesheet\" href=\"' . asset('vendor/myodevops/alternative/dist/css/' . {$expression} . '.css') . '\">'; ?>";
         });
-    
-        Blade::directive('webpassCdn', function () {
-            return "<?php echo '<script src=\"https://cdn.jsdelivr.net/npm/@laragear/webpass@2/dist/webpass.js\" defer></script>'; ?>";
-        });                
-    }    
+    }
 }

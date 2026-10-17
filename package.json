@@ -11,6 +11,12 @@
       "datatables.net-bs4": "^1.10.25",
       "bootstrap": "^4.6.2",
       "jquery": "^3.6.0"
+    },
+    "scripts": {
+      "minify": "terser public/dist/js/alternative.js --compress --mangle -o public/dist/js/alternative.min.js"
+    },
+    "devDependencies": {
+      "terser": "^5.31.0"
     }
   }
   

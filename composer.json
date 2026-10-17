@@ -24,38 +24,11 @@
             "providers": [
                 "myodevops\\ALTErnative\\ALTErnativeServiceProvider"
             ]
-        },
-        "public-files": [
-            {
-                "from": "js/alternative.js",
-                "to": "public/js/alternative.js"
-            },
-            {
-                "from": "js/alternative.min.js",
-                "to": "public/js/alternative.min.js"
-            },
-            {
-                "from": "css/alternative.css",
-                "to": "public/css/alternative.css"
-            },
-            {
-                "from": "js/daterangepicker.js",
-                "to": "public/js/daterangepicker.js"
-            },
-            {
-                "from": "js/daterangepicker.min.js",
-                "to": "public/js/daterangepicker.min.js"
-            },
-            {
-                "from": "css/daterangepicker.css",
-                "to": "public/css/daterangepicker.css"
-            }
-        ]
+        }
     },
     "require": {
         "illuminate/support": "^11.0",
-        "jeroennoten/laravel-adminlte": ">=v3.8.5",
-        "laragear/webauthn": "^3.1.2",
+        "jeroennoten/laravel-adminlte": "^v3.8.5",
         "php": ">=8.2"
     },
     "require-dev": {

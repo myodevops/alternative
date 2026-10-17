@@ -28,6 +28,6 @@ class ModalMessage extends Component
      */
     public function render()
     {
-        return view('alternative::components.modal-message');
+        return view('alternative::components.form.modal-message');
     }
 }

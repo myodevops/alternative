@@ -1,4 +1,5 @@
-myo = {
+// myo and dttable are global on purpose: they are used by the pages and by the scripts of the components
+window.myo = {
     UI: {
         alertType : {
             OperativeSuccess: 0,
@@ -7,7 +8,6 @@ myo = {
             OperativeError: 3,
             RuntimeError: 4            
         },
-        newRecordUUID: 'af24f1d4-2916-4c55-a526-9f6217466ec3',
         dttable: null,
         OnDeleteActionFormAlert: false,
         OnModifyActionFormAlert: false,
@@ -15,14 +15,14 @@ myo = {
         OnInfoActionFormAlert: false,
 
         initializeDataTable (tableRef) {
-            table = document.getElementById(tableRef);
+            const table = document.getElementById(tableRef);
             if (typeof(table) == 'undefined' || table == null) {
                 alert ('Undefined datatableform "' + tableRef + '" defined as datatable');
             }
             jQuery('#'+tableRef).on('preInit.dt', function (e) {
-                dttable = jQuery('#'+tableRef).DataTable();
+                window.dttable = jQuery('#'+tableRef).DataTable();
 
-                for (i = dttable.buttons().length; i > 0; i--) {
+                for (let i = dttable.buttons().length; i > 0; i--) {
                     dttable.buttons(i-1).remove();
                 }
                 dttable.button().add(0, {
@@ -56,7 +56,7 @@ myo = {
                 }
             });
 
-            tbody = table.getElementsByTagName('tbody')[0];
+            const tbody = table.getElementsByTagName('tbody')[0];
             jQuery(tbody).on('click', 'tr', function () {
                 if (jQuery(this).hasClass('selected')) {
                     jQuery(this).removeClass('selected');
@@ -72,16 +72,17 @@ myo = {
             const dataTableOnDeleteActionForm = this.api().context[0].oInit.onDeleteActionForm;
             
             // Assignment of the action to the modify button
-            let modifyButton = null;
-            e.childNodes.forEach (element => {
-                modifyButton = element.querySelector('#dtModifyButton');
-            });
+            // The buttons are searched in the whole row, so the actions column can be in any position
+            const modifyButton = e.querySelector('[data-dtaction="modify"]');
             if (modifyButton) {
                 const onModifyActionForm = document.getElementById (dataTableOnModifyActionForm);
                 if (typeof(onModifyActionForm) != 'undefined' && onModifyActionForm != null) {
                     const modifyKey = myo.UI.getListKeys (dataTableOnModifyActionForm, 'actionread');   // Use the array of the key of the method as primary key
-                    modifyButton.setAttribute ('onclick', 
-                        'myo.UI.onClickModifyDataTable("' + dataTableOnModifyActionForm + '", ["' + Object.values(myo.UI.getObjKeys (modifyKey, settings)).join(', ') + '"])');
+                    // The key values are passed as data with a closure, never concatenated in a code string
+                    const modifyValues = modifyKey.map (key => settings[key]);
+                    modifyButton.addEventListener ('click', function () {
+                        myo.UI.onClickModifyDataTable (dataTableOnModifyActionForm, modifyValues);
+                    });
                 } else {
                     if (!this.OnModifyActionFormAlert) {
                         modifyButton.style.display = 'none';
@@ -89,16 +90,15 @@ myo = {
                 }
             }
                 
-            let deleteButton = null;
-            e.childNodes.forEach (element => {
-                deleteButton = element.querySelector('#dtDeleteButton');
-            });
+            const deleteButton = e.querySelector('[data-dtaction="delete"]');
             if (deleteButton) {
                 const onDeleteActionForm = document.getElementById (dataTableOnDeleteActionForm);
                 if (typeof(onDeleteActionForm) != 'undefined' && onDeleteActionForm != null) {
                     const deleteKey = myo.UI.getListKeys (dataTableOnDeleteActionForm + '-button', 'action');   // Use the array of the key of the method as primary key
-                    deleteButton.setAttribute ('onclick', 
-                        'myo.UI.onClickDeleteDataTable("' + dataTableOnDeleteActionForm + '", ["' + Object.values (myo.UI.getObjKeys (deleteKey, settings)).join(', ') + '"])');
+                    const deleteValues = deleteKey.map (key => settings[key]);
+                    deleteButton.addEventListener ('click', function () {
+                        myo.UI.onClickDeleteDataTable (dataTableOnDeleteActionForm, deleteValues);
+                    });
                 } else {
                     if (!this.OnDeleteActionFormAlert) {
                         deleteButton.style.display = 'none';
@@ -110,20 +110,26 @@ myo = {
             const dataTableOnInfoActionForm = this.api().context[0].oInit.onInfoActionForm;
             const dataTableonClickInfoActionCustom = this.api().context[0].oInit.onClickInfoActionCustom;
 
-            let infoButton = null;
-            e.childNodes.forEach (element => {
-                infoButton = element.querySelector('#dtInfoButton');
-            });
+            const infoButton = e.querySelector('[data-dtaction="info"]');
             if (infoButton) {
                 const onInfoActionForm = document.getElementById (dataTableOnInfoActionForm);
                 if (typeof(onInfoActionForm) != 'undefined' && onInfoActionForm != null) {
                     const infoKey = myo.UI.getListKeys (dataTableOnInfoActionForm, 'actionread');   // Use the array of the key of the method as primary key
+                    const infoValues = infoKey.map (key => settings[key]);
                     if (dataTableonClickInfoActionCustom != null) {
-                        infoButton.setAttribute ('onclick', 
-                            dataTableonClickInfoActionCustom + '("' + dataTableOnInfoActionForm + '", ["' + Object.values(myo.UI.getObjKeys (infoKey, settings)).join(', ') + '"])');
+                        // Find the custom function by name, also with a dotted path (e.g. "myApp.showInfo")
+                        const customFunction = dataTableonClickInfoActionCustom.split('.').reduce ((obj, name) => obj == null ? undefined : obj[name], window);
+                        if (typeof customFunction !== 'function') {
+                            window.alert ("The onClickInfoActionCustom function " + dataTableonClickInfoActionCustom + " doesn't exist.");
+                        } else {
+                            infoButton.addEventListener ('click', function () {
+                                customFunction (dataTableOnInfoActionForm, infoValues);
+                            });
+                        }
                     } else {
-                        infoButton.setAttribute ('onclick', 
-                            'myo.UI.onClickInfoDataTable("' + dataTableOnInfoActionForm + '", ["' + Object.values(myo.UI.getObjKeys (infoKey, settings)).join(', ') + '"])');
+                        infoButton.addEventListener ('click', function () {
+                            myo.UI.onClickInfoDataTable (dataTableOnInfoActionForm, infoValues);
+                        });
                     }
                 } else {
                     if (!this.OnInfoActionFormAlert) {
@@ -155,13 +161,9 @@ myo = {
 
             var keys = this.getListKeys (modalname + '-button', 'action');
 
-            // Set the parameter of the confirm button 
-            var modalnamedeletebutton = '#' + modalname + '-button';
-            var i = 0;
-            keys.forEach (function (key) {
-                jQuery(modalnamedeletebutton)[0].dataset.actionset = jQuery(modalnamedeletebutton)[0].dataset.action.replace ('{' + key + '}', arraykey[i]);
-                i++;
-            });
+            // Set the parameter of the confirm button
+            var deletebutton = jQuery('#' + modalname + '-button')[0];
+            deletebutton.dataset.actionset = this.replaceKeys (deletebutton.dataset.action, keys, arraykey);
 
             // Show the confirm modal
             jQuery('#' + modalname).modal('show');
@@ -205,14 +207,11 @@ myo = {
                 return false;
             }
 
-            // Read the record
+            // Read the record, with all the placeholders of the URL replaced in a single call
+            var response;
             if ("actionread" in form.dataset) {
-                var i = 0;
-                keys.forEach (function(key) {
-                    response = myo.WS.callReadRequest (form.dataset.actionread.replace ('{' + key + '}', arraykey[i]), 
-                        document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-                    i++;
-                });
+                response = myo.WS.callReadRequest (this.replaceKeys (form.dataset.actionread, keys, arraykey),
+                    document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
             } else {
                 window.alert ("The actionread parameter in the form is missing.");
                 return false;
@@ -230,7 +229,7 @@ myo = {
             var data = { };
 
             // find all the input fields in the form and populate
-            inputfields = form.getElementsByTagName('input');
+            let inputfields = form.getElementsByTagName('input');
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
                     switch(field.type) {
@@ -274,8 +273,19 @@ myo = {
 
             return keys;
         },
+        replaceKeys(url, keys, arraykey) {
+            // Replace every {key} placeholder of the URL with the value in the same position of arraykey.
+            // The values are encoded, so characters like / ? # & don't change the URL.
+            // split/join is used instead of replace() because replace() interprets $ in the replacement string
+            keys.forEach (function (key, i) {
+                const value = (arraykey[i] === undefined || arraykey[i] === null) ? '' : arraykey[i];
+                url = url.split('{' + key + '}').join(encodeURIComponent(value));
+            });
+
+            return url;
+        },
         getObjKeys(arrayKey, objData) {
-            objKey = { };
+            const objKey = { };
             arrayKey.forEach (function (key) {
                 if (key in objData) {
                     objKey[key] = objData[key];
@@ -285,11 +295,10 @@ myo = {
             return objKey;
         },
         clearFields (form, keys) {
-            inputfields = form.getElementsByTagName('input');
+            let inputfields = form.getElementsByTagName('input');
             Array.from(inputfields).forEach (function(field) {
-                if (keys.includes (field.name)) {  
-                    field.value = this.newRecordUUID;
-                } else if ("fieldname" in field.dataset) {
+                // The key fields are emptied too: an empty key identifies a new record
+                if ("fieldname" in field.dataset) {
                     switch(field.type) {
                         case 'checkbox':
                             field.checked = false;
@@ -317,7 +326,7 @@ myo = {
         },
         populateFields (form, data) {
             // find all the input fields in the form and populate
-            inputfields = form.getElementsByTagName('input');
+            let inputfields = form.getElementsByTagName('input');
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
                     field.value = '';
@@ -340,28 +349,35 @@ myo = {
             Array.from(inputfields).forEach (function(field) {
                 if ("fieldname" in field.dataset) {
                     if (field.dataset.fieldname in data) {
+                        // The selected values can be a JSON array, a string with the values separated by "|" or a single value
+                        const value = data[field.dataset.fieldname];
+                        let selected;
+                        if (Array.isArray(value)) {
+                            selected = value;
+                        } else if (typeof value === 'string') {
+                            selected = value === '' ? [] : value.split('|');
+                        } else {
+                            selected = value == null ? [] : [value];
+                        }
+                        // The option values are strings: compare them as strings
+                        selected = selected.map (singlesel => String(singlesel));
+
                         if (field.hasAttribute('data-ajax--url')) {
                             field.innerHTML = '';
-                            url = field.getAttribute('data-ajax--url');
-                            if (data[field.dataset.fieldname].hasOwnProperty('split')) {
-                                selected = data[field.dataset.fieldname].split('|');
-                            } else {
-                                selected = [data[field.dataset.fieldname]];
-                            }
+                            const url = field.getAttribute('data-ajax--url');
                             selected.forEach (function(singlesel) {
-                                response = myo.WS.callReadRequest  (url + "/" + singlesel, 
+                                const response = myo.WS.callReadRequest  (url + "/" + encodeURIComponent(singlesel),
                                                                     document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-                                optionElement = document.createElement('option');
+                                const optionElement = document.createElement('option');
                                 optionElement.value = singlesel;
-                                optionElement.textContent = response.data.text;    
+                                optionElement.textContent = response.data.text;
                                 optionElement.setAttribute('selected', null);
                                 field.appendChild(optionElement);
                             });
                         } else {
-                            var selection = '|' + data[field.dataset.fieldname] + '|';
-                            Array.from(field.childNodes).forEach(function(child) {
-                                child.selected = selection.includes('|' + child.value + '|');
-                            });    
+                            Array.from(field.options).forEach(function(child) {
+                                child.selected = selected.includes(child.value);
+                            });
                         }
                         myo.UI.changeField(field);
                     }
@@ -464,7 +480,7 @@ myo = {
     },
     WS: {
         callReadRequest  (url, token) {
-            var response = [success = false, data=null];
+            var response = { success: false, data: null };
             jQuery.ajax({
                 url: url,
                 method: 'GET',
@@ -473,8 +489,7 @@ myo = {
                     "_token": token
                 },
                 success: function (result) {
-                    conclusion = myo.UI.processAlert (result);
-                    response.success = conclusion;
+                    response.success = myo.UI.processAlert (result);
                     response.data = result;
                 },
                 error: function (result) {
@@ -483,8 +498,7 @@ myo = {
                             "message": result.responseText
                         }
                     });
-                    conclusion = false; 
-                    response.success = conclusion;
+                    response.success = false;
                 },
             });
 

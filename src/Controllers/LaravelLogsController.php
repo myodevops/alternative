@@ -26,7 +26,7 @@ class LaravelLogsController extends Controller
 
         $laravellog = new LaravelLog();
 
-        return $laravellog->getData ($_GET, $laravellog->query(), "\myodevops\ALTErnative\Resources\LaravelLogsResource", false);
+        return $laravellog->getData (request()->query(), $laravellog->query(), "\myodevops\ALTErnative\Resources\LaravelLogsResource", false);
     }
 
     /**
