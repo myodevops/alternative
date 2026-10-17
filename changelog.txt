@@ -28,3 +28,4 @@ v00.10.08 - 13.01.2024 - nicola-myo      Bug fix creating the Laravel.log name w
 v00.10.09 - 27.07.2024 - nicola-myo      The adminlte modal forms do not close when clicking outside them
 v00.10.10 - 26.10.2024 - nicola-myo      Include the daterangepicker sources in the library instead installing laravel-admin (obsolete)
 v00.10.11 - 17.10.2026 - nicola-myo      Error correction following assisted review, removal of the passkey attempt
+v00.10.12 - 18.10.2026 - nicola-myo      New documentation: README and docs/ folder
